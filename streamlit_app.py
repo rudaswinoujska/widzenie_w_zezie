@@ -1,32 +1,26 @@
-mport streamlit as st
-import pandas as pd
-import numpy as np
+import streamlit as st
+import matplotlib.pyplot as plt
 
-st.set_page_config(page_title="Widzenie w Zezie", layout="centered")
+# Nagłówek aplikacji
+st.title("Mój Generator Rysunków")
 
-st.title("Widzenie w Zezie — demo Streamlit")
-st.write("Prosty interfejs demonstracyjny. Dodaj swój opis tutaj.")
+# Panel boczny z ustawieniami
+st.sidebar.header("Ustawienia")
+kolor_linii = st.sidebar.color_picker("Wybierz kolor linii", "#00f900")
+grubosc = st.sidebar.slider("Grubość punktów", 1, 20, 5)
+typ_rysunku = st.sidebar.selectbox("Co rysujemy?", ["Linie promieniście", "Punkty losowe"])
 
-with st.sidebar:
-    st.header("Ustawienia")
-    demo_mode = st.selectbox("Tryb demo", ["Interakcyjny", "Wykres"], index=0)
-    show_examples = st.checkbox("Pokaż przykładowe dane", value=True)
+# Tworzenie rysunku za pomocą Matplotlib
+fig, ax = plt.subplots()
 
-st.header("Wejście")
-uploaded_file = st.file_uploader("Wgraj obraz (opcjonalnie)", type=["png", "jpg", "jpeg"])
-if uploaded_file is not None:
-    st.image(uploaded_file, caption="Wgrany obraz", use_column_width=True)
+if typ_rysunku == "Linie promieniście":
+    for i in range(1, 11):
+        ax.plot([0, i], [0, 10], color=kolor_linii)
+else:
+    ax.scatter([1, 2, 3, 4, 5], [5, 2, 8, 1, 6], s=grubosc*10, color=kolor_linii)
 
-name = st.text_input("Twoje imię", "Gość")
-if st.button("Przywitaj"):
-    st.success(f"Cześć, {name}! 👋")
+# Wyświetlenie rysunku na stronie
+st.pyplot(fig)
 
-if show_examples:
-    st.subheader("Przykładowe dane i wykres")
-    df = pd.DataFrame(np.random.randn(20, 3), columns=["A", "B", "C"]).cumsum()
-    st.dataframe(df)
-
-    if demo_mode == "Wykres":
-        st.line_chart(df)
-    else:
-        st.area_chart(df)
+# Przycisk do pobierania (opcjonalnie)
+st.download_button("Pobierz jako obrazek", "rysunek.png")
