@@ -84,7 +84,7 @@ with col2:
     fig_op, ax_op = plt.subplots(figsize=(2, 2), dpi=100, facecolor='none')
     ax_op.set_facecolor('none')
     if oko == "OD":        
-        t_op = transforms.Affine2D().rotate_deg_around(130, 130, kat_ct) + ax_op.transData
+        t_op = transforms.Affine2D().rotate_deg_around(130, 130, kat_obiektywny) + ax_op.transData
     else:
         t_op = ax_op.transData
     circle_op = Circle((130, 130), 40, edgecolor="#DBDBDB", facecolor='none', lw=2, transform=t_op)
@@ -102,7 +102,7 @@ with col2:
     fig_ol, ax_ol = plt.subplots(figsize=(2, 2), dpi=100, facecolor='none')
     ax_ol.set_facecolor('none')
     if oko == "OS":        
-        t_ol = transforms.Affine2D().rotate_deg_around(130, 130, kat_ct) + ax_ol.transData
+        t_ol = transforms.Affine2D().rotate_deg_around(130, 130, kat_obiektywny) + ax_ol.transData
     else:
         t_ol = ax_ol.transData
     circle_ol = Circle((130, 130), 40, edgecolor="#DBDBDB", facecolor='none', lw=2, transform=t_ol)
