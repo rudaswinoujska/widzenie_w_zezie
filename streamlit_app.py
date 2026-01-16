@@ -68,8 +68,8 @@ with col1:
     ax.scatter(flip_x(210+fiksacja*3), 210, color="#5D21BD", s=30, zorder=10)
     ax.text(flip_x(210+fiksacja*3), 210, "e", color='#5D21BD', fontsize=20, ha='right', va='bottom', zorder=11)
     # punkt anomalny
-    ax.scatter(flip_x(210+kat_subiektywny*3), 210, color="#1B9FA8", s=30, zorder=10)
-    ax.text(flip_x(210+kat_subiektywny*3), 210, "a", color='#1B9FA8', fontsize=20, ha='right', va='top', zorder=11)
+    ax.scatter(flip_x(210+kat_anomalii*3), 210, color="#1B9FA8", s=30, zorder=10)
+    ax.text(flip_x(210+kat_anomalii*3), 210, "a", color='#1B9FA8', fontsize=20, ha='right', va='top', zorder=11)
     # punkt zerowy
     ax.scatter(flip_x(210+kat_obiektywny*3), 210, color='#291D27', s=30, zorder=10)
     ax.text(flip_x(210+kat_obiektywny*3), 210, "0", color='#291D27', fontsize=20, ha='left', va='top', zorder=11)
@@ -131,31 +131,24 @@ with col2:
         kierunek = "brak ruchu"
     st.write(f"    Ruch nastawczny przy CT: {kierunek}, {kat_ct}°")
     st.write(f"    Kąt anomalii: {kat_anomalii}°")
+
     # Typ korespondencji wg reguł użytkownika
-    if kat_anomalii == 0:
-        typ_korespondencji = "NRC (Normalna korespondencja siatkówkowa)"
-        # S = H (kąt subiektywny równy obiektywnemu)
+    def typ_korespondencji(kat_anomalii, kat_subiektywny, kat_obiektywny):
+        if kat_anomalii == 0:
+            return "Korespondencja Prawidłowa (NRC)"
+        elif kat_subiektywny == 0 and kat_anomalii == kat_obiektywny:
+            return "Korespondencja Nieprawidłowa Harmonijna (Harc)"
+        elif abs(kat_subiektywny) > 0 and abs(kat_subiektywny) < abs(kat_obiektywny) and (kat_subiektywny * kat_obiektywny > 0):
+            return "Korespondencja Nieprawidłowa Nieharmonijna (Uharc)"
+        elif (kat_subiektywny > 0 and kat_obiektywny < 0) or (kat_subiektywny < 0 and kat_obiektywny > 0):
+            return "Korespondencja Paradoksalna Typu I"
+        elif abs(kat_subiektywny) > abs(kat_obiektywny):
+            return "Korespondencja Paradoksalna Typu II"
+        else:
+            return "Inny/Nietypowy stan kliniczny"
 
-    elif kat_subiektywny == 0:
-        typ_korespondencji = "HARC (Harmonijna anomalna korespondencja)"
-        # A = H (kąt anomalii równy obiektywnemu)
-
-    elif abs(kat_anomalii) < abs(kat_obiektywny) and (kat_anomalii * kat_obiektywny > 0):
-        typ_korespondencji = "UHARC (Nieharmonijna anomalna korespondencja)"
-        # S jest mniejszy niż H, ale ma ten sam zwrot (najczęstszy typ po operacjach)
-
-    elif (kat_anomalii * kat_obiektywny < 0):
-        typ_korespondencji = "PARC I (Paradoksalna anomalna korespondencja typu I)"
-        # Kąt anomalii jest większy niż kąt obiektywny i ma przeciwny znak (A > H)
-
-    elif abs(kat_anomalii) > abs(kat_obiektywny) and (kat_anomalii * kat_obiektywny > 0):
-        typ_korespondencji = "PARC II (Paradoksalna anomalna korespondencja typu II)"
-        # Kąt subiektywny ma przeciwny zwrot niż kąt obiektywny
-
-    else:
-        typ_korespondencji = "Nietypowa korespondencja / Błąd pomiaru"
-
-    st.write(f"{typ_korespondencji}")
+    typ_korespondencji_wynik = typ_korespondencji(kat_anomalii, kat_subiektywny, kat_obiektywny)
+    st.write(f"{typ_korespondencji_wynik}")
 
     
 
@@ -305,7 +298,7 @@ with col7:
 
   
 with col8:
-    st.markdown("### powidoki + mitt")
+    st.markdown("### transfer powidoku")
     st.write("FE ( ¦ ), AE obserwuje mitt")
     fig_mitt, ax_mitt = plt.subplots(figsize=(4, 4), dpi=100, facecolor='none')
     # Granatowy kwadrat
@@ -315,11 +308,11 @@ with col8:
     #naświetlamy oko dominujące, obserwuje oko niedowidzące
     if oko == "OD":
         x_offset_ai = (kat_anomalii-fiksacja) / 120  # skalowanie kąta do rysunku
-        x_offset_heid = fiksacja / 120  # skalowanie kąta do rysunku
+        x_offset_heid = -fiksacja / 120  # skalowanie kąta do rysunku
        
     else:
         x_offset_ai = -(kat_anomalii-fiksacja) / 120  # skalowanie kąta do rysunku
-        x_offset_heid = -fiksacja / 120  # skalowanie kąta do rysunku
+        x_offset_heid = fiksacja / 120  # skalowanie kąta do rysunku
 
 
     # powidoki
