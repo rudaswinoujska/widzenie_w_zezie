@@ -29,7 +29,7 @@ kat_obiektywny = st.sidebar.slider("kąt obiektywny", min_value=-50, max_value=5
 kat_subiektywny = st.sidebar.slider("kąt subiektywny", min_value=-50, max_value=50, value=-10, step=5)
 
 fiksacja = st.sidebar.slider("fikacja", min_value=-50, max_value=50, value=10, step=5)
-st.sidebar.caption("donosowa (+), skroniowa (-)")
+st.sidebar.caption("skroniowa (-), nosowa (+)")
 
 # --- PRZELICZANIE PARAMETRÓW ---
 kat_anomalii = kat_obiektywny - kat_subiektywny
