@@ -217,18 +217,17 @@ with col4:
 with col5:
 # --- rlt ---
     st.markdown("### rlt")
-    #oko prawe czerwony filtr + pryzmat dysocjujący baza dół
-    st.write("OP-red+10Δ BD")
+    #oko prowadzące czerwony filtr + pryzmat dysocjujący baza dół
+    st.write("FE-red+10Δ BD")
     fig_rlt, ax_rlt = plt.subplots(figsize=(2, 2), dpi=100, facecolor='none')
 
     #przesunięcia poziome
     if oko == "OD":
         x_offset_red = kat_subiektywny / 40  # skalowanie kąta do rysunku
-        x_offset_white = 0
     else:
-        x_offset_red = 0
-        x_offset_white = kat_subiektywny / 40
-    
+        x_offset_red = -kat_subiektywny / 40 
+
+    x_offset_white = 0
     y_offset = -0.25  # przesunięcie pionowe dla bazy dół
     # Czerwone obiekty (widoczne dla jednego oka)
     ax_rlt.scatter(1 + x_offset_red, 1 - y_offset, color='#FF414B', s=120, zorder=20, edgecolors='none')  # kółko
@@ -272,23 +271,24 @@ with col6:
 
 with col7:
     st.markdown("### powidoki h-b")
-    st.write("OP (╌), OL ( ¦ )")
+    st.write("FE ( ¦ ), AE (╌)")
     fig_afterimage, ax_afterimage = plt.subplots(figsize=(4, 4), dpi=100, facecolor='none')
     
       #przesunięcia poziome
     if oko == "OD":
-        x_offset_afterimageop = kat_anomalii / 120  # skalowanie kąta do rysunku
-        x_offset_afterimageol = 0
+        x_offset_afterimage = kat_anomalii / 120  # skalowanie kąta do rysunku
+        
     else:
-        x_offset_afterimageop = 0
-        x_offset_afterimageol = kat_anomalii / 120
-    # pozioma - OP
-    ax_afterimage.plot([0.1+x_offset_afterimageop, 0.45 +x_offset_afterimageop], [0.5, 0.5], color="#4ECFE6", lw=8, zorder=10)
-    ax_afterimage.plot([0.55+x_offset_afterimageop, 0.9+x_offset_afterimageop], [0.5, 0.5], color="#4ECFE6", lw=8, zorder=10)
+        x_offset_afterimage = - kat_anomalii / 120
+        
+        
+    # pozioma - AE
+    ax_afterimage.plot([0.1+x_offset_afterimage, 0.45 +x_offset_afterimage], [0.5, 0.5], color="#4ECFE6", lw=8, zorder=10)
+    ax_afterimage.plot([0.55+x_offset_afterimage, 0.9+x_offset_afterimage], [0.5, 0.5], color="#4ECFE6", lw=8, zorder=10)
     
-    # pionowa - OL
-    ax_afterimage.plot([0.5+x_offset_afterimageol, 0.5+x_offset_afterimageol], [0.1, 0.45], color="#4ECFE6", lw=8, zorder=10)
-    ax_afterimage.plot([0.5+x_offset_afterimageol, 0.5+x_offset_afterimageol], [0.55, 0.9], color="#4ECFE6", lw=8, zorder=10)
+    # pionowa - FE
+    ax_afterimage.plot([0.5, 0.5], [0.1, 0.45], color="#4ECFE6", lw=8, zorder=10)
+    ax_afterimage.plot([0.5, 0.5], [0.55, 0.9], color="#4ECFE6", lw=8, zorder=10)
     ax_afterimage.set_xlim(0, 1)
     ax_afterimage.set_ylim(0, 1)
     ax_afterimage.set_aspect('equal')
