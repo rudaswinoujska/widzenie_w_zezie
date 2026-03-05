@@ -129,8 +129,8 @@ with col2:
         kierunek = "ze skroni"
     else:
         kierunek = "brak ruchu"
-    st.write(f"    Ruch nastawczny przy CT: {kierunek}, {kat_ct}°")
-    st.write(f"    Kąt anomalii: {kat_anomalii}°")
+    st.write(f"    Ruch nastawczny przy CT: {kierunek}, {kat_ct}∆")
+    st.write(f"    Kąt anomalii: {kat_anomalii}∆")
 
     # Typ korespondencji wg reguł użytkownika
     def typ_korespondencji(kat_anomalii, kat_subiektywny, kat_obiektywny):
@@ -172,11 +172,8 @@ with col3:
     ax_maddox.set_aspect('equal')
     ax_maddox.axis('off')
 
-    # linia czerwona - przesunięcie w zależności od kąta subiektywnego
-    if oko == "OS":
-        x= -kat_subiektywny/20  # skalowanie kąta do rysunku
-    else:
-        x=kat_subiektywny/20  # skalowanie kąta do rysunku
+    # linia czerwona - przesunięcie w zależności od kąta subiektywnego       
+    x=kat_subiektywny/20     
     ax_maddox.plot([center[0] + x, center[0] + x], [center[1] - ramie, center[1] + ramie], color="#E21E2ECC", lw=4, zorder=30)
 
     st.pyplot(fig_maddox)
@@ -197,7 +194,7 @@ with col4:
         x_offset_green = 0
     else:
         x_offset_red = 0
-        x_offset_green = kat_subiektywny / 40
+        x_offset_green = -kat_subiektywny / 40
     
     # Czerwone obiekty (widoczne dla jednego oka)
     ax_worth.scatter(1 + x_offset_red, 0.6, color='#FF414B', s=120, zorder=20, edgecolors='none')  # kółko
@@ -222,7 +219,7 @@ with col5:
     fig_rlt, ax_rlt = plt.subplots(figsize=(2, 2), dpi=100, facecolor='none')
 
     #przesunięcia poziome
-    if oko == "OD":
+    if oko == "OS":
         x_offset_red = kat_subiektywny / 40  # skalowanie kąta do rysunku
     else:
         x_offset_red = -kat_subiektywny / 40 
@@ -276,10 +273,10 @@ with col7:
     
       #przesunięcia poziome
     if oko == "OD":
-        x_offset_afterimage = kat_anomalii / 120  # skalowanie kąta do rysunku
+        x_offset_afterimage = (kat_subiektywny-fiksacja) / 120  # skalowanie kąta do rysunku
         
     else:
-        x_offset_afterimage = - kat_anomalii / 120
+        x_offset_afterimage = - (kat_subiektywny-fiksacja) / 120
         
         
     # pozioma - AE
