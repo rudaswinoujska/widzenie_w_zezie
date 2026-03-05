@@ -268,15 +268,15 @@ with col6:
 
 with col7:
     st.markdown("### powidoki h-b")
-    st.write("FE ( ¦ ), AE (╌)")
+    st.write("FE (╌), AE ( ¦ )")
     fig_afterimage, ax_afterimage = plt.subplots(figsize=(4, 4), dpi=100, facecolor='none')
     
       #przesunięcia poziome
     if oko == "OD":
-        x_offset_afterimage = (kat_subiektywny-fiksacja) / 120  # skalowanie kąta do rysunku
+        x_offset_afterimage = - (kat_subiektywny-fiksacja) / 120  # skalowanie kąta do rysunku
         
     else:
-        x_offset_afterimage = - (kat_subiektywny-fiksacja) / 120
+        x_offset_afterimage = (kat_subiektywny-fiksacja) / 120
         
         
     # pozioma - AE
